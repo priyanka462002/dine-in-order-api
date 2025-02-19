@@ -1,0 +1,14 @@
+spring:
+ application:
+   name: dine-in-order-api
+
+
+#DATASOURCE CONFIGURATION
+ datasource:
+  url: jdbc:mysql://localhost:3306/springboot_actordb?createDatabaseIfNotExist=true
+  username: root
+  password: Priyanka@20
+ jpa:
+  show-sql: true
+  hibernate:
+   ddl-auto: update
