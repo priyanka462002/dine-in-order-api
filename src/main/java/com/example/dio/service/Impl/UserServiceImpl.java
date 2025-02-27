@@ -1,0 +1,20 @@
+package com.example.dio.service.Impl;
+
+import com.example.dio.model.User;
+import com.example.dio.repository.UserRepository;
+import com.example.dio.service.UserService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@AllArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private final  UserRepository userRepository;
+
+    public User registerUser(User user){
+        return userRepository.save(user);
+    }
+
+
+}
