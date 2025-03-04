@@ -19,12 +19,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/api/v1")
 @RestController
 @AllArgsConstructor
 @Tag(name = "User Controller",description = "Collection of Endpoints dealing user data" )
 public class UserController {
 
     private final UserService userService;
+
 
     @PostMapping("/register")
     @Operation(description = """
@@ -44,14 +46,41 @@ public class UserController {
         return ResponseBuilder.success(HttpStatus.CREATED, "User Created",response);
     }
 
+
+
     @GetMapping("/users/{userId}")
+    @Operation(description = """
+             The API Endpoint is used to find the user data.
+            The Endpoint requires the user to enter the id to the details
+            """,
+      responses = {
+      @ApiResponse(responseCode = "201",description = "User Found") ,
+          @ApiResponse(responseCode = "400",description = "User not Found",content = {
+                  @Content(schema = @Schema(implementation = FieldErrorResponse.class))
+
+      })
+})
+
+
     public ResponseEntity<ResponseStructure<UserResponse>> findUserById(@PathVariable long userId){
         UserResponse response=userService.findUserById(userId);
         return ResponseBuilder.success(HttpStatus.OK, "User Found",response);
 
     }
 
+
     @PutMapping("/users/{userId}")
+    @Operation(description = """
+            The API Endpoint is used to update the user data.
+            The Endpoint the user has to entire the id details to be updated.
+            """,
+            responses = {
+            @ApiResponse(responseCode = "201",description = "User Data Updated"),
+                    @ApiResponse(responseCode = "400",description ="User data not updated",content = {
+                            @Content(schema = @Schema(implementation = FieldErrorResponse.class))
+                    })
+            })
+
     public ResponseEntity<ResponseStructure<UserResponse>> updateUserById(@PathVariable long userId,  @RequestBody @Valid UserRequest userRequest){
         UserResponse response =userService.updateUserById(userId,userRequest);
 
