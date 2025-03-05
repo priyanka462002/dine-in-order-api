@@ -40,9 +40,4 @@ public class User {
 
     @Column(name="last_modified_At")
     private LocalDateTime lastModifiedAt;
-
-
-
-
-
 }

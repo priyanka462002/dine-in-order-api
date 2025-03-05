@@ -1,44 +1,65 @@
 package com.example.dio.service.Impl;
 
+import com.example.dio.dto.UserResponse;
+import com.example.dio.dto.request.RegistrationRequest;
+import com.example.dio.dto.request.UserRequest;
 import com.example.dio.enums.UserRole;
+import com.example.dio.exception.UserNotFoundByIdException;
+import com.example.dio.mapper.UserMapper;
 import com.example.dio.model.Admin;
 import com.example.dio.model.Staff;
 import com.example.dio.model.User;
 import com.example.dio.repository.UserRepository;
 import com.example.dio.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final  UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
-    public User registerUser(User user){
-        User user2 =this.createUserByRole(user.getRole());
+    public UserResponse registerUser(RegistrationRequest registrationRequest) {
+        User user = this.createUserByRole(registrationRequest.getRole());
 
-        this.mapToNewUser(user,user2);
-        return userRepository.save(user2);
+        userMapper.mapToUserEntity(registrationRequest, user);
+        userRepository.save(user);
+        return userMapper.mapToUserResponse(user);
+
     }
 
-    private User createUserByRole(UserRole role){
+    private User createUserByRole(UserRole role) {
         User user;
-        switch (role){
-            case ADMIN -> user=new Admin();
-            case STAFF -> user=new Staff();
+        switch (role) {
+            case ADMIN -> user = new Admin();
+            case STAFF -> user = new Staff();
             default -> throw new RuntimeException("Failed to register user,invalid user");
         }
         return user;
     }
 
- private void mapToNewUser(User user,User user2){
-        user2.setUsername(user.getUsername());
-        user2.setEmail(user.getEmail());
-        user2.setPassword(user.getPassword());
-        user2.setRole(user.getRole());
-        user2.setPhNo(user.getPhNo());
- }
 
+    @Override
+    public UserResponse findUserById(long userId) {
+        User user=userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundByIdException("Failed to find user,user not found by id"));
+        return userMapper.mapToUserResponse(user);
+
+    }
+
+    @Override
+    public UserResponse updateUserById(long userId, UserRequest userRequest) {
+      User user=userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundByIdException("Failed to find user,user not found by id"));
+      this.userMapper.mapToUserEntity(userRequest,user);
+        return userMapper.mapToUserResponse(user);
+    }
 }
