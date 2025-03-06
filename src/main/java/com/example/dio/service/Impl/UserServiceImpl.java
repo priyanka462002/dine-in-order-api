@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    /**
+     * It helps to user to register for Either of the role Admin or Staff
+     * @param registrationRequest used to register the user.
+     * @return user parent save the user data
+     */
 
     @Override
     public UserResponse registerUser(RegistrationRequest registrationRequest) {
@@ -36,6 +41,12 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * Produces and return child instance of the user based on User role.
+     * @param role the role of the user
+     * @return user the parent reference containing either of Staff or Admin instances
+     */
+
     private User createUserByRole(UserRole role) {
         User user;
         switch (role) {
@@ -46,6 +57,11 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * Based on id it helps to find user details
+     * @param userId used to find the user data
+     * @return the user parent reference containing the user details.
+     */
 
     @Override
     public UserResponse findUserById(long userId) {
@@ -54,6 +70,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToUserResponse(user);
 
     }
+
+    /**
+     * It helps to return the user to update the specified data
+     * @param userRequest it used to
+     * @param userId it helps to get the user data
+     * @return user parent reference to update the user specified data
+     */
 
     @Override
     public UserResponse updateUserById(long userId, UserRequest userRequest) {
