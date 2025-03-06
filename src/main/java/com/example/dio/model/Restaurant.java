@@ -17,39 +17,39 @@ public class Restaurant {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "restaurantId")
+    @Column(name = "restaurant_id")
     private long restaurantId;
 
-    @Column(name = "restaurantName")
+    @Column(name = "restaurant_name")
     private String restaurantName;
 
     @Column(name = "address")
     private String address;
 
-    @Column(name = "phNo")
-    private String phNo;
+    @Column(name = "contact_number")
+    private String contactNumber;
 
     @Column(name = "email")
-    private String email;
+    private String contactEmail;
 
-    @Column(name = "opensAt")
+    @Column(name = "opens_at")
     private LocalTime opensAt;
 
-    @Column(name = "closesAt")
+    @Column(name = "closes_at")
     private LocalTime closesAt;
 
-    @Column(name = "dietType")
+    @Column(name = "diet_type")
     @Enumerated(EnumType.STRING)
-    private List<DietType> dietType;
+    private List<DietType> dietTypes;
 
-    @Column(name = "createdAt")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "lastModifiedAt")
+    @Column(name = "last_modified_at")
     private LocalDateTime lastModifiedAt;
 
     @ManyToMany(mappedBy = "restaurants",fetch = FetchType.EAGER)
-    private List<Cuisine> cuisines;
+    private List<CuisineType> cuisineTypes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private  Admin admin;
