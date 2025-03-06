@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1")
+@RequestMapping("${app.base-url}")
 @RestController
 @AllArgsConstructor
 @Tag(name = "User Controller",description = "Collection of Endpoints dealing user data" )
@@ -43,7 +43,7 @@ public class UserController {
         UserResponse response =userService.registerUser(registrationRequest);
 
 
-        return ResponseBuilder.success(HttpStatus.CREATED, "User Created",response);
+        return ResponseBuilder.created( response,"User Created");
     }
 
 
@@ -64,7 +64,7 @@ public class UserController {
 
     public ResponseEntity<ResponseStructure<UserResponse>> findUserById(@PathVariable long userId){
         UserResponse response=userService.findUserById(userId);
-        return ResponseBuilder.success(HttpStatus.OK, "User Found",response);
+        return ResponseBuilder.ok(response,"User Found");
 
     }
 
@@ -84,7 +84,7 @@ public class UserController {
     public ResponseEntity<ResponseStructure<UserResponse>> updateUserById(@PathVariable long userId,  @RequestBody @Valid UserRequest userRequest){
         UserResponse response =userService.updateUserById(userId,userRequest);
 
-        return ResponseBuilder.success(HttpStatus.OK,"User Updated",response);
+        return ResponseBuilder.ok(response,"User Updated");
     }
 
 
