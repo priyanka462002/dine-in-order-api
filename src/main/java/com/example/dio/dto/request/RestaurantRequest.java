@@ -25,7 +25,7 @@ public class RestaurantRequest {
 
     @NotNull(message = "Phone number cannot be null")
     @NotBlank(message = "Phone number cannot be blank")
-    @Pattern(regexp = "^[7-9]d{9}$",message = "Invalid phone number")
+    @Pattern(regexp = "^[7-9]\\d{9}$",message = "Invalid phone number")
     private String contactNumber;
 
     @NotNull(message = "email cannot be null")
@@ -36,21 +36,17 @@ public class RestaurantRequest {
     @Size(min=1,message = "There must be at least one diet type")
     private List<DietType> dietTypes;
 
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}\\d{2}:\\d{2}",message = "Invalid data format.Use yyyy-MM-dd HH:mm")
     @Column(name = "opens_at")
     private LocalTime opensAt;
 
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}\\d{2}:\\d{2}",message = "Invalid data format.Use yyyy-MM-dd HH:mm" )
     @Column(name = "closes_at")
     private LocalTime closesAt;
 
-    @NotNull(message = "Date cannot be null")
-    @FutureOrPresent(message = "Date must be in the present or future")
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Date cannot be null")
-    @FutureOrPresent(message = "Date must be in the present or future")
+
     @Column(name = "last_modified_at")
     private LocalDateTime lastModifiedAt;
 
@@ -58,7 +54,6 @@ public class RestaurantRequest {
     @NotNull(message = "Cuisine types cannot be null")
     @NotEmpty(message = "At least one cuisine type must be provided")
     @Size(min = 1, message = "There must be at least one cuisine type")
-    @Pattern(regexp = "^[A-Za-z]+$")
     private List<String>cuisineTypes;
 
 }
