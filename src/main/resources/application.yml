@@ -13,6 +13,6 @@ spring:
    ddl-auto: update
 
 app:
- base-url: /api/v1
+  base-url: /api/v1
 server:
  port: 8089
