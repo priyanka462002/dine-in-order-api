@@ -2,6 +2,7 @@ package com.example.dio.controller;
 
 import com.example.dio.dto.request.FoodItemRequest;
 import com.example.dio.dto.response.FoodItemResponse;
+import com.example.dio.model.Restaurant;
 import com.example.dio.service.FoodItemService;
 import com.example.dio.util.FieldErrorResponse;
 import com.example.dio.util.ResponseStructure;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping
 public class FoodItemController {
     private FoodItemService foodItemService;
 
@@ -40,12 +42,20 @@ public class FoodItemController {
                 .body(ResponseStructure.create(HttpStatus.CREATED, "Food item created", foodItemResponse));
     }
 
+
     public ResponseEntity<ResponseStructure<List<FoodItemResponse>>> getFoodItemsByCategories(@RequestParam("category") List<String> categories) {
        List<FoodItemResponse>foodItemResponses=foodItemService.getFoodItemsByCategories(categories);
 
        return ResponseEntity.status(HttpStatus.FOUND)
                .body(ResponseStructure.create(HttpStatus.FOUND,"Food items found",foodItemResponses));
     }
+
+    @GetMapping("/foodItems/restaurant/{restaurantId}")
+    public ResponseEntity<ResponseStructure<List<FoodItemResponse>>> getAllFoodItems(@RequestParam("restaurantId")Long restaurantId){
+        List<FoodItemResponse> responses=foodItemService.getFoodItemsByRestaurant(restaurantId);
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .body(ResponseStructure.create(HttpStatus.FOUND,"Food items found",responses));
+}
 
 
 }
