@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @AllArgsConstructor
 public class FoodItemServiceImpl implements FoodItemService {
@@ -78,6 +76,12 @@ public class FoodItemServiceImpl implements FoodItemService {
        .toList();
    }
 
+   public List<FoodItemResponse> getFoodItemsByRestaurant(Long restaurantId){
+       List<FoodItem> foodItems=foodItemRepository.findFoodItemsByRestaurantId(restaurantId);
+       return foodItems.stream()
+               .map(foodItemMapper::mapToFoodItemResponse)
+               .collect(Collectors.toList());
+   }
 
 }
 
