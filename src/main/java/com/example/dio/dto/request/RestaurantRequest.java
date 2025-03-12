@@ -43,6 +43,7 @@ public class RestaurantRequest {
     private LocalTime closesAt;
 
 
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
