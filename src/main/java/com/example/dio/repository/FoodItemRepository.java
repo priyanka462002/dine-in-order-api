@@ -15,4 +15,8 @@ public interface FoodItemRepository extends JpaRepository<FoodItem ,Long> {
             "HAVING COUNT(DISTINCT c) = :categoryCount")
     List<FoodItem> findFoodItemsByCategoryName(@Param("categories") List<String> categories, @Param("categoryCount") Long categoryCount);
 
+    @Query("SELECT f FROM FoodItem f WHERE f.restaurant.restaurantId =:restaurantId")
+    List<FoodItem> findFoodItemsByRestaurantId(@Param("restaurantId")Long restaurantId);
+
+
 }
