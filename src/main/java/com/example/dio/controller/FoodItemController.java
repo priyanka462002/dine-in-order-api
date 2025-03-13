@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping
+@RequestMapping("${app.base-url}")
 public class FoodItemController {
     private FoodItemService foodItemService;
 
