@@ -21,7 +21,7 @@ public class CartItem {
     private double totalPrice;
 
     @Column(name = "isOrdered")
-    private String isOrdered;
+    private boolean isOrdered;
 
     @ManyToOne
     private RestaurantTable restaurantTable;
