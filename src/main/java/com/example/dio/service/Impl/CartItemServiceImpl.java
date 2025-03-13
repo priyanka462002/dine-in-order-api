@@ -32,7 +32,6 @@ public class CartItemServiceImpl implements CartItemService {
        RestaurantTable restaurantTable=tableRepository.findById(tableId)
                .orElseThrow(() -> new RuntimeException("Requested table Id not available"));
        CartItem cartItem=new CartItem();
-       cartItem.setIsOrdered("yes");
        cartItem.setQuantity(quantity);
        cartItem.setRestaurantTable(restaurantTable);
        cartItem.setFoodItem(foodItem);
