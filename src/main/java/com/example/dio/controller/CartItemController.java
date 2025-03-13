@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("${app.base-url}")
 public class CartItemController {
 
     private CartItemService cartItemService;
