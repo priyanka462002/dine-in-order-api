@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("${app.base-url}")
 @Tag(name="RestaurantController", description = "Endpoints for managing restaurant data")
 public class RestaurantController {
 
