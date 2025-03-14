@@ -17,39 +17,33 @@ public interface FoodItemMapper {
 
     FoodItemResponse mapToFoodItemResponse(FoodItem foodItem);
 
-
-    default String mapToString(CuisineType value) {
-        if (value == null) {
-            return null;
-        }
-        return value.getCuisineName();
+    default CuisineType mapToCuisineType(String cuisineType){
+        CuisineType cuisineType1=new CuisineType();
+        cuisineType1.setCuisineName(cuisineType);
+        return cuisineType1;
     }
 
-    default String mapToString(Category value) {
-        if (value == null) {
-            return null;
+    default List<CuisineType> mapCuisines(List<String>CuisineName){
+        if(CuisineName==null || CuisineName.isEmpty()){
+            return List.of();
         }
-        return value.getCategory();
+        return CuisineName.stream()
+                .map(this::mapToCuisineType)
+                .collect(Collectors.toList());
     }
 
-    default CuisineType mapToCuisineType(String value) {
-        if (value == null) {
-            return null;
-        } else {
-            CuisineType type = new CuisineType();
-            type.setCuisineName(value.toLowerCase());
-            return type;
+    default Category mapToCategory(String category){
+        Category category1=new Category();
+        category1.setCategory(category);
+        return category1;
+    }
+    default List<Category>map(List<String>categories){
+        if (categories==null || categories.isEmpty()){
+            return List.of();
         }
+        return categories.stream()
+                .map(this::mapToCategory)
+                .collect(Collectors.toList());
     }
 
-    default Category mapToCategory (String value){
-        if (value == null) {
-            return null;
-        } else {
-            Category type = new Category();
-            type.setCategory(value.toLowerCase());
-            return type;
-   }
-
-}
 }
