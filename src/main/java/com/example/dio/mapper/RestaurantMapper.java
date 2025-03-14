@@ -10,11 +10,11 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface RestaurantMapper {
 
-    Restaurant mapToRestaurantEntity(RestaurantRequest restaurantRequest);
+    Restaurant mapToRestaurant(RestaurantRequest restaurantRequest);
 
     RestaurantResponse mapToRestaurantResponse(Restaurant restaurant);
 
-    default String mapToString(CuisineType cuisineType){
+    default String mapToStringCuisineType(CuisineType cuisineType){
         if(cuisineType == null){
             return  null;
         }
