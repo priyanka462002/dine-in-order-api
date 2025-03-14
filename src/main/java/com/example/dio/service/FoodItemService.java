@@ -10,6 +10,6 @@ public interface FoodItemService {
 
     FoodItemResponse createFoodItem(Long restaurantId, FoodItemRequest foodItemRequest);
     List<FoodItemResponse>getFoodItemsByCategories(List<String>categories);
-    List<FoodItemResponse>getFoodItemsByRestaurant(Long restaurantId);
+
 
 }
