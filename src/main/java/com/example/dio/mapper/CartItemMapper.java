@@ -10,19 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CartItemMapper {
 
-   CartItemResponse mapToCartItemResponse(CartItem cartItem);
+   CartItemResponse mapToCartItem(CartItem cartItem);
 
-  default String mapToString(Category value){
-     if(value==null){
-        return null;
-     }
-     else return value.getCategory().toLowerCase();
-  }
 
-  default String mapToString(CuisineType value){
-     if(value==null){
-        return  null;
-     }
-     else return value.getCuisineName().toLowerCase();
-  }
 }
