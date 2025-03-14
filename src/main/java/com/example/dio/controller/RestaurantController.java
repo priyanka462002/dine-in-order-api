@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +25,9 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="RestaurantController", description = "Endpoints for managing restaurant data")
 public class RestaurantController {
 
-    private final RestaurantService restaurantService;
+    private RestaurantService restaurantService;
 
-    @PostMapping("/users/{userId}/restaurants")
+    @PostMapping("/restaurants/{userId}")
     @Operation(description = "Create a new restaurant if the user is an admin",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Restaurant Created"),
@@ -37,12 +38,12 @@ public class RestaurantController {
                             @Content(schema = @Schema(implementation = FieldErrorResponse.class))
                     })
             })
-    public ResponseEntity<ResponseStructure<RestaurantResponse>> createRestaurant(@RequestBody @Valid RestaurantRequest restaurantRequest, @PathVariable long userId) {
-        RestaurantResponse response = restaurantService.createRestaurant(restaurantRequest,userId);
-        return ResponseBuilder.created(response, "Restaurant Created");
+   public ResponseEntity<ResponseStructure<RestaurantResponse>> createRestaurant(@PathVariable long userId,@Valid @RequestBody RestaurantRequest restaurantRequest){
+        RestaurantResponse restaurantResponse=restaurantService.createRestaurant(restaurantRequest,userId);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ResponseStructure.create(HttpStatus.CREATED,"Restaurant created successfully",restaurantResponse));
     }
-
-
 }
 
 
