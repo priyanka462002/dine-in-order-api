@@ -8,10 +8,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FoodItemResponse {
+
     private  String itemName;
+
     private double price;
+
     private String description;
+
     private String availability;
+
     private int stock;
+
     private DietType dietType;
 }
