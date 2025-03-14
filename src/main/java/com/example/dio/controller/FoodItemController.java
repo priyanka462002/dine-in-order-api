@@ -36,26 +36,19 @@ public class FoodItemController {
                             @Content(schema = @Schema(implementation = FieldErrorResponse.class))
                     })
             })
-    public ResponseEntity<ResponseStructure<FoodItemResponse>> createFoodItem(@PathVariable Long restaurantId, @RequestBody @Valid FoodItemRequest foodItemRequest) {
+    public ResponseEntity<ResponseStructure<FoodItemResponse>> createFoodItem(@PathVariable Long restaurantId, @RequestBody  FoodItemRequest foodItemRequest) {
         FoodItemResponse foodItemResponse = foodItemService.createFoodItem(restaurantId, foodItemRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseStructure.create(HttpStatus.CREATED, "Food item created", foodItemResponse));
     }
 
 
+    @GetMapping("/foodItems/categories")
     public ResponseEntity<ResponseStructure<List<FoodItemResponse>>> getFoodItemsByCategories(@RequestParam("category") List<String> categories) {
        List<FoodItemResponse>foodItemResponses=foodItemService.getFoodItemsByCategories(categories);
 
        return ResponseEntity.status(HttpStatus.FOUND)
                .body(ResponseStructure.create(HttpStatus.FOUND,"Food items found",foodItemResponses));
     }
-
-    @GetMapping("/foodItems/restaurant/{restaurantId}")
-    public ResponseEntity<ResponseStructure<List<FoodItemResponse>>> getAllFoodItems(@RequestParam("restaurantId")Long restaurantId){
-        List<FoodItemResponse> responses=foodItemService.getFoodItemsByRestaurant(restaurantId);
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .body(ResponseStructure.create(HttpStatus.FOUND,"Food items found",responses));
-}
-
 
 }
