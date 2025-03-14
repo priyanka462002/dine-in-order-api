@@ -57,7 +57,8 @@ public class FoodItemServiceImpl implements FoodItemService {
    }
 
     private String updateFoodAvailability(int stock, String availability) {
-       return availability=(stock>0)?"AVAILABLE":"OUT OF STOCK";
+       availability=(stock>0)?"AVAILABLE":"OUT OF STOCK";
+       return availability;
     }
 
 
@@ -76,12 +77,7 @@ public class FoodItemServiceImpl implements FoodItemService {
        .toList();
    }
 
-   public List<FoodItemResponse> getFoodItemsByRestaurant(Long restaurantId){
-       List<FoodItem> foodItems=foodItemRepository.findFoodItemsByRestaurantId(restaurantId);
-       return foodItems.stream()
-               .map(foodItemMapper::mapToFoodItemResponse)
-               .collect(Collectors.toList());
-   }
+
 
 }
 

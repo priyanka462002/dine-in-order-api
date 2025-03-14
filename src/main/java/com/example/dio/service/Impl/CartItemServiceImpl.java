@@ -11,12 +11,14 @@ import com.example.dio.repository.FoodItemRepository;
 import com.example.dio.repository.TableRepository;
 import com.example.dio.service.CartItemService;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CartItemServiceImpl implements CartItemService {
 
     private  CartItemRepository cartItemRepository;
@@ -27,27 +29,33 @@ public class CartItemServiceImpl implements CartItemService {
    public CartItemResponse createCartItem(Long itemId, long tableId,int quantity){
        //fetch the FoodItem from the DB
        FoodItem foodItem=foodItemRepository.findById(itemId)
-               .orElseThrow(() -> new RuntimeException("requested food item Id not available"));
+               .orElseThrow(() -> new RuntimeException("Food item not found with id:"+itemId));
 
        RestaurantTable restaurantTable=tableRepository.findById(tableId)
-               .orElseThrow(() -> new RuntimeException("Requested table Id not available"));
+               .orElseThrow(() -> new RuntimeException("Table not found with id:"+tableId));
+
        CartItem cartItem=new CartItem();
-       cartItem.setQuantity(quantity);
-       cartItem.setRestaurantTable(restaurantTable);
        cartItem.setFoodItem(foodItem);
-       double totalPrice=quantity*foodItem.getPrice();
-       cartItem.setTotalPrice(totalPrice);
-       return cartItemMapper.mapToCartItemResponse(cartItem);
-   }
-
-
-   public CartItemResponse updateQuantity(Long cartId,int quantity){
-       CartItem cartItem=cartItemRepository.findById(cartId)
-                       .orElseThrow(() -> new RuntimeException("cart item with id not found"));
+       cartItem.setRestaurantTable(restaurantTable);
        cartItem.setQuantity(quantity);
-       cartItem.setTotalPrice(cartItem.getFoodItem().getPrice() * quantity);
-      return cartItemMapper.mapToCartItemResponse(cartItemRepository.save(cartItem));
+       cartItem.setTotalPrice(calculatorTotalPrice(foodItem,quantity));
+       cartItemRepository.save(cartItem);
+
+       return cartItemMapper.mapToCartItem(cartItem);
    }
 
+
+   public CartItemResponse updateCartItemQuantity(Long cartId,int newQuantity){
+       CartItem cartItem=cartItemRepository.findById(cartId)
+                       .orElseThrow(() -> new RuntimeException("cart item not found with id:"+cartId));
+      cartItemRepository.updateQuantityByCartItemId(cartId,newQuantity);
+      cartItem.setCartId(newQuantity);
+      cartItem.setTotalPrice(calculatorTotalPrice(cartItem.getFoodItem(),newQuantity));
+      return cartItemMapper.mapToCartItem(cartItem);
+   }
+
+   public double calculatorTotalPrice(FoodItem foodItem,int quantity){
+       return foodItem.getPrice()*quantity;
+   }
 
 }

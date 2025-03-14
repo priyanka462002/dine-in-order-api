@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -15,7 +17,7 @@ public class RestaurantTable {
     @Column(name = "table_id")
     private long tableId;
 
-
+    @Column(name = "tableNo")
     private long tableNo;
 
     @Column(name = "table_capacity")
@@ -27,5 +29,11 @@ public class RestaurantTable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "restaurantTable")
+    private List<FoodOrder> foodOrder;
+
+    @OneToOne
+    private CartItem cartItem;
 
 }

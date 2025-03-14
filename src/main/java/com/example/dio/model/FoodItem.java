@@ -52,8 +52,11 @@ public class FoodItem {
     @ManyToOne(fetch = FetchType.LAZY)
     private Restaurant restaurant;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Category> categories;
+
+    @OneToMany(mappedBy = "foodItem")
+    private List<CartItem>cartItems;
 
 
 }

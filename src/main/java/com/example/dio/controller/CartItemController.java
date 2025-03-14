@@ -17,16 +17,17 @@ public class CartItemController {
 
     private CartItemService cartItemService;
 
-    @PostMapping("/tables/{tableId}/cartItem/itemId/{itemId}")
-    public ResponseEntity<ResponseStructure<CartItemResponse>>createCartItem(@PathVariable long tableId,@PathVariable long itemId,@RequestParam int quantity){
+    @PostMapping("/tables/{tableId}/cartItems/foodItems/{itemId}")
+    public ResponseEntity<ResponseStructure<CartItemResponse>>createCartItem(@PathVariable long itemId,@PathVariable long tableId,@RequestParam("quantity") int quantity){
         CartItemResponse cartItemResponse=cartItemService.createCartItem(itemId,tableId,quantity);
-        return  ResponseBuilder.ok(cartItemResponse,"cart items created");
+        return  ResponseEntity.status(HttpStatus.CREATED)
+                .body(ResponseStructure.create(HttpStatus.CREATED,"cart item created",cartItemResponse));
     }
 
-    @PatchMapping("/tables/{tableId}/cartItems/foodItems/{itemId}")
-    public ResponseEntity<ResponseStructure<CartItemResponse>> addFoodItemsToCart(@PathVariable Long cartId, @PathVariable int quantity){
+    @PatchMapping("/cartItems/{cartId}")
+    public ResponseEntity<ResponseStructure<CartItemResponse>> updateCartItemQuantity(@PathVariable Long cartId, @RequestParam("quantity") int quantity){
         //add food items to the cart
-        CartItemResponse cartItemResponse = cartItemService.updateQuantity(cartId,quantity);
+        CartItemResponse cartItemResponse = cartItemService.updateCartItemQuantity(cartId,quantity);
         return  ResponseBuilder.success(HttpStatus.CREATED,"Food item added to the cart successfully",cartItemResponse);
 }
 
