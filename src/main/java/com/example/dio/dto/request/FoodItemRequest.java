@@ -1,6 +1,7 @@
 package com.example.dio.dto.request;
 
 import com.example.dio.enums.DietType;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,18 +13,26 @@ import java.util.List;
 @Getter
 public class FoodItemRequest {
 
+    @NotBlank(message = "Food name cannot be empty")
+    @Size(max = 100,message = "Food name must be at most 100 characters")
     private  String itemName;
 
+    @Positive(message = "Price must be greater than zero")
     private double price;
 
+    @Min(value = 0,message = "Description must be at most 255 characters")
     private String description;
 
+    @NotNull(message = "Stock cannot be negative")
     private int stock;
 
+    @NotNull(message = "Diet type is required")
     private DietType dietType;
 
+    @NotNull(message = "cuisine cannot be null")
     private String cuisineType;
 
+    @NotNull(message = "At least one category expected")
     private List<String> categories;
 
     private LocalDateTime createdAt;
