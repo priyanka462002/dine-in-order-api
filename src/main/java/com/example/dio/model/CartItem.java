@@ -29,4 +29,7 @@ public class CartItem {
     @ManyToOne
     private FoodItem foodItem;
 
+    @ManyToOne
+    private FoodOrder foodOrder;
+
 }
