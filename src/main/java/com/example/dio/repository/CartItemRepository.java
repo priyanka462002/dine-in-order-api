@@ -22,4 +22,9 @@ public interface CartItemRepository extends JpaRepository<CartItem,Long> {
 
     List<CartItem> findByIsOrderedAndRestaurantTable_TableId(Boolean False,Long tableId) ;
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE CartItem c SET c.isOrdered=true WHERE c.id IN :cartItemIds")
+    void updateCartItemsIsOrdered(@Param("cartItemIds")List<Long>cartItemIds);
+
 }
