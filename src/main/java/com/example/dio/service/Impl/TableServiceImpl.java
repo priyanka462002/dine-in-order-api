@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class TableServiceImpl implements RestaurantTableService {
 
-    private TableRepository tableRepository;
-    private RestaurantRepository restaurantRepository;
-    private TableMapper tableMapper;
+    private final TableRepository tableRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final TableMapper tableMapper;
 
     @Override
     public TableResponse registerTable(TableRequest tableRequest, Long restaurantId) {
@@ -29,17 +29,19 @@ public class TableServiceImpl implements RestaurantTableService {
         RestaurantTable restaurantTable = tableMapper.mapToTableEntity(tableRequest);
         restaurantTable.setRestaurant(foundRestaurant);
 
-        //restaurantTable.setTableNo(generateNextTableNo(restaurantId));
+        restaurantTable.setTableNo(generateNextTableNo(foundRestaurant.getRestaurantId()));
 
         tableRepository.save(restaurantTable);
         return tableMapper.mapToTableResponse(restaurantTable);
 
 }
 
-      //private  int generateNextTableNo(Long restaurantId){
-       // Integer maxTableNo =tableRepository.findMaxTableNoByIdRestaurant(restaurantId);
-      //  return (maxTableNo==null)? 1:maxTableNo +1;
+      private  int generateNextTableNo(Long restaurantId){
+       Integer maxTableNo =tableRepository.findMaxTableNoByIdRestaurant(restaurantId);
+      return (maxTableNo==null)? 1:maxTableNo + 1;
 
-//}
+
+
+}
 
 }
