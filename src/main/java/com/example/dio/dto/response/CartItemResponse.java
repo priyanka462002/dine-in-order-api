@@ -12,7 +12,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CartItemResponse {
 
-    private FoodItemResponse foodItemResponse;
+    private long cartId;
+
+    private FoodItemResponse foodItem;
 
     private int quantity;
 
