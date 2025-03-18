@@ -3,6 +3,7 @@ package com.example.dio.service.Impl;
 import com.example.dio.dto.response.CartItemResponse;
 import com.example.dio.dto.response.FoodItemResponse;
 import com.example.dio.mapper.CartItemMapper;
+import com.example.dio.mapper.FoodItemMapper;
 import com.example.dio.model.CartItem;
 import com.example.dio.model.FoodItem;
 import com.example.dio.model.RestaurantTable;
@@ -21,18 +22,19 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CartItemServiceImpl implements CartItemService {
 
-    private  CartItemRepository cartItemRepository;
-    private  CartItemMapper cartItemMapper;
-    private  FoodItemRepository foodItemRepository;
-    private TableRepository tableRepository;
+    private final CartItemRepository cartItemRepository;
+    private final CartItemMapper cartItemMapper;
+    private final FoodItemRepository foodItemRepository;
+    private final TableRepository tableRepository;
+    private final FoodItemMapper foodItemMapper;
 
-   public CartItemResponse createCartItem(Long itemId, long tableId,int quantity){
+   public CartItemResponse createCartItem(Long itemId, Long tableId, int quantity){
        //fetch the FoodItem from the DB
        FoodItem foodItem=foodItemRepository.findById(itemId)
-               .orElseThrow(() -> new RuntimeException("Food item not found with id:"+itemId));
+               .orElseThrow(() -> new RuntimeException("Food item not found with id:"+ itemId));
 
        RestaurantTable restaurantTable=tableRepository.findById(tableId)
-               .orElseThrow(() -> new RuntimeException("Table not found with id:"+tableId));
+               .orElseThrow(() -> new RuntimeException("Table not found with id:"+ tableId));
 
        CartItem cartItem=new CartItem();
        cartItem.setFoodItem(foodItem);
@@ -41,7 +43,10 @@ public class CartItemServiceImpl implements CartItemService {
        cartItem.setTotalPrice(calculatorTotalPrice(foodItem,quantity));
        cartItemRepository.save(cartItem);
 
-       return cartItemMapper.mapToCartItem(cartItem);
+       CartItemResponse cartItemResponse = cartItemMapper.mapToCartItem(cartItem);
+       cartItemResponse.setFoodItem(foodItemMapper.mapToFoodItemResponse(foodItem));
+
+       return cartItemResponse;
    }
 
 
@@ -49,12 +54,16 @@ public class CartItemServiceImpl implements CartItemService {
        CartItem cartItem=cartItemRepository.findById(cartId)
                        .orElseThrow(() -> new RuntimeException("cart item not found with id:"+cartId));
       cartItemRepository.updateQuantityByCartItemId(cartId,newQuantity);
-      cartItem.setCartId(newQuantity);
+      cartItem.setQuantity(newQuantity);
       cartItem.setTotalPrice(calculatorTotalPrice(cartItem.getFoodItem(),newQuantity));
-      return cartItemMapper.mapToCartItem(cartItem);
+      CartItemResponse cartItemResponse=cartItemMapper.mapToCartItem(cartItem);
+      cartItemResponse.setFoodItem(foodItemMapper.mapToFoodItemResponse(cartItem.getFoodItem()));
+      //return cartItemMapper.mapToCartItem(cartItem);
+       return  cartItemResponse;
    }
 
    public double calculatorTotalPrice(FoodItem foodItem,int quantity){
+
        return foodItem.getPrice()*quantity;
    }
 
