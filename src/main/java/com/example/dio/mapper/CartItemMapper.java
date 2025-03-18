@@ -1,7 +1,6 @@
 package com.example.dio.mapper;
 
 import com.example.dio.dto.response.CartItemResponse;
-import com.example.dio.dto.response.FoodItemResponse;
 import com.example.dio.model.*;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
@@ -11,6 +10,5 @@ import org.springframework.stereotype.Component;
 public interface CartItemMapper {
 
    CartItemResponse mapToCartItem(CartItem cartItem);
-
 
 }
