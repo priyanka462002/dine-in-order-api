@@ -9,6 +9,9 @@ import lombok.Setter;
 @Setter
 public class FoodItemResponse {
 
+
+    private long itemId;
+
     private  String itemName;
 
     private double price;
