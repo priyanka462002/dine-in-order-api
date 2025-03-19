@@ -17,7 +17,7 @@ public class CloudinaryConfig {
         return new Cloudinary(ObjectUtils.asMap(
                 "cloud_name",env.getCloudinary().getCloudName(),
                        "api_key",env.getCloudinary().getApiKey(),
-                       "api_key",env.getCloudinary().getApiSecret()
+                       "api_secret",env.getCloudinary().getApiSecret()
         ));
     }
 
