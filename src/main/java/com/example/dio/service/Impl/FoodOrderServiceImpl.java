@@ -1,7 +1,9 @@
 package com.example.dio.service.Impl;
 
+import com.example.dio.dto.response.CartItemResponse;
 import com.example.dio.dto.response.FoodOrderResponse;
 import com.example.dio.enums.OrderStatus;
+import com.example.dio.mapper.CartItemMapper;
 import com.example.dio.mapper.FoodOrderMapper;
 import com.example.dio.model.CartItem;
 import com.example.dio.model.FoodOrder;
@@ -15,16 +17,19 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class FoodOrderServiceImpl implements FoodOrderService {
 
-    private TableRepository tableRepository;
-    private FoodOrderRepository foodOrderRepository;
-    private CartItemRepository cartItemRepository;
-    private FoodOrderMapper foodOrderMapper;
+    private final TableRepository tableRepository;
+    private final FoodOrderRepository foodOrderRepository;
+    private final CartItemRepository cartItemRepository;
+    private final FoodOrderMapper foodOrderMapper;
+    private final CartItemMapper cartItemMapper;
 
     @Override
     @Transactional
@@ -35,10 +40,24 @@ public class FoodOrderServiceImpl implements FoodOrderService {
         List<CartItem> cartItems=cartItemRepository.findByIsOrderedAndRestaurantTable_TableId(false,tableId);
         FoodOrder foodOrder=new FoodOrder();
         foodOrder.setRestaurantTable(table);
+        System.out.println("table"+table);
+        foodOrder.setOrderedAt(LocalDateTime.now());
         foodOrder.setCartItems(cartItems);
+
         foodOrder.setOrderStatus(OrderStatus.UN_BUILD);
         double totalAmount=calculateTotalAmount(cartItems);
         foodOrder.setTotalAmount(totalAmount);
+
+
+        List<Long> cartItemIds =cartItems.stream()
+                .map(CartItem::getCartId)
+                .toList();
+
+        List<CartItemResponse> cartItemResponses=cartItems.stream()
+                .map(cartItemMapper::mapToCartItem)
+                .toList();
+
+        cartItemRepository.updateCartItemsIsOrdered(cartItemIds);
         foodOrderRepository.save(foodOrder);
         return foodOrderMapper.mapToFoodOrder(foodOrder);
 

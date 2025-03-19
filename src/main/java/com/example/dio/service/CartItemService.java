@@ -6,7 +6,7 @@ import com.example.dio.model.CartItem;
 
 public interface CartItemService {
 
-   CartItemResponse createCartItem(Long itemId, long tableId, int quantity);
+   CartItemResponse createCartItem(Long itemId, Long tableId, int quantity);
    CartItemResponse updateCartItemQuantity(Long cartId,int newQuantity);
 
 }

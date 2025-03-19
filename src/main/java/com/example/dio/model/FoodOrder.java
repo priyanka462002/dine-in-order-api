@@ -31,7 +31,7 @@ public class FoodOrder {
     @ManyToOne
     private RestaurantTable restaurantTable;
 
-    @OneToMany(mappedBy = "foodOrder")
+    @OneToMany
     private List<CartItem> cartItems;
 
 

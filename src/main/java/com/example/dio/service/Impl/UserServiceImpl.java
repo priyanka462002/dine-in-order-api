@@ -12,10 +12,7 @@ import com.example.dio.model.User;
 import com.example.dio.repository.UserRepository;
 import com.example.dio.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
+
 import org.springframework.stereotype.Service;
 
 
@@ -25,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    //private final PasswordEncoder passwordEncoder;
     /**
      * It helps to user to register for Either of the role Admin or Staff
      * @param registrationRequest used to register the user.
@@ -36,10 +34,16 @@ public class UserServiceImpl implements UserService {
         User user = this.createUserByRole(registrationRequest.getRole());
 
         userMapper.mapToUserEntity(registrationRequest, user);
+       // this.encryptPassword(user);
         userRepository.save(user);
         return userMapper.mapToUserResponse(user);
 
     }
+
+    //private void encryptPassword(User user){
+      //  String encodePassword= passwordEncoder.encode(user.getPassword());
+        // user.setPassword(encodePassword);
+    //}
 
     /**
      * Produces and return child instance of the user based on User role.

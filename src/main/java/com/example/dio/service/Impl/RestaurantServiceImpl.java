@@ -26,13 +26,13 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 public class RestaurantServiceImpl implements RestaurantService {
 
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    private  UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private  RestaurantMapper restaurantMapper;
+    private final RestaurantMapper restaurantMapper;
 
-    private CuisineTypeRepository cuisineTypeRepository;
+    private final CuisineTypeRepository cuisineTypeRepository;
 
 
     @Override

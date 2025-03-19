@@ -11,13 +11,11 @@ import lombok.Setter;
 @Setter
 public class TableRequest {
 
-    @Min(value = 1, message = "Table number must be a positive integer")
-    private long tableNo;
-
     @Min(value = 1, message = "Capacity must be at least 1")
     @Max(value = 20, message = "Capacity cannot be more than 20")
     private long tableCapacity;
 
+    @Enumerated(EnumType.STRING)
     private TableStatus tableStatus;
 
 }

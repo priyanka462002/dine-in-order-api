@@ -27,13 +27,13 @@ public class RestaurantTable {
     @Enumerated(EnumType.STRING)
     private TableStatus tableStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "restaurantTable")
+    @OneToMany
     private List<FoodOrder> foodOrder;
 
-    @OneToOne
-    private CartItem cartItem;
+    @OneToMany(mappedBy = "restaurantTable")
+    private List<CartItem> cartItems;
 
 }
